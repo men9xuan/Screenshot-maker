@@ -144,18 +144,20 @@ def is_blue_beat(image):
     average_color_right = np.array(mean_val_right[:3])  # Exclude the alpha channel if present
 
     red_lb, green_lb, blue_lb = 100, 90, 90
-    red_ub, green_ub, blue_ub = 120, 255, 255
+    red_ub, green_ub, blue_ub = 115, 255, 255
 
     # Check if the average color of the left half is within the specified range
     left_half_check = (  # Red channel
                         green_lb <= average_color_left[1] and  # Green channel
-                        blue_lb <= average_color_left[0])     # Blue channel
+                        blue_lb <= average_color_left[0] and      # Blue channel
+                        average_color_left[2] <= red_ub)    # Red channel
 
     # Check if the average color of the right half is within the specified range
     right_half_check = (  # Red channel
                         green_lb <= average_color_right[1] and  # Green channel
-                        blue_lb <= average_color_right[0])     # Blue channel
-
+                        blue_lb <= average_color_right[0] and      # Blue channel
+                        average_color_right[2] <= red_ub)    # Red channel
+    
     return left_half_check, right_half_check
 
 
@@ -212,7 +214,7 @@ def process_image_by_color_range(output_folder1 = "red", output_folder2 = "blue"
 
 # debug function to check the color of the image
 def check_image():
-    input_folder = "bad"
+    input_folder = "problematic"
     for filename in os.listdir(input_folder):
         if filename.lower().endswith(('.png', '.jpg', '.jpeg')):  # Only process image files
             image_path = os.path.join(input_folder, filename)
