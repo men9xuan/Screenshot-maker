@@ -4,15 +4,9 @@ import shutil
 import numpy as np
 
 # A simple image classfier to put the corresponding images in the corresponding folders
-
+parent_folder = "train_data_by_folder"
 # Input and output directories
 input_folder = "frames_output"  # Folder containing the images
-output_folder1 = "edge"  # Folder for first color range
-output_folder2 = "centre"  # Folder for second color range
-
-# Create output directories if they don't exist
-os.makedirs(output_folder1, exist_ok=True)
-os.makedirs(output_folder2, exist_ok=True)
 
 def is_beat_on(image):
     """Check if the beat is on based on the average color of the pixels within a circle around the center pixel."""
@@ -225,17 +219,17 @@ def check_image():
 
 def main():
     # First, process images by color
-    process_image_by_color_range(output_folder1="red", output_folder2="blue")
+    process_image_by_color_range(output_folder1=os.path.join(parent_folder, "red"), output_folder2=os.path.join(parent_folder, "blue"))
 
     # Then, process images in the red folder to check for the beat
-    process_image_by_beat_on_off(input_folder="red", output_folder_on="red_on_beat", output_folder_off="red_off_beat")
+    process_image_by_beat_on_off(input_folder=os.path.join(parent_folder, "red"), output_folder_on=os.path.join(parent_folder, "red_on_beat"), output_folder_off=os.path.join(parent_folder, "red_off_beat"))
 
     # Finally, process images in the blue folder to check for the beat
-    process_image_by_beat_on_off(input_folder="blue", output_folder_on="blue_on_beat", output_folder_off="blue_off_beat")
+    process_image_by_beat_on_off(input_folder=os.path.join(parent_folder, "blue"), output_folder_on=os.path.join(parent_folder, "blue_on_beat"), output_folder_off=os.path.join(parent_folder, "blue_off_beat"))
 
     # Delete the red and blue folders after processing
-    shutil.rmtree("red")
-    shutil.rmtree("blue")
+    shutil.rmtree(os.path.join(parent_folder, "red"))
+    shutil.rmtree(os.path.join(parent_folder, "blue"))
 
 if __name__ == "__main__":
     main()
